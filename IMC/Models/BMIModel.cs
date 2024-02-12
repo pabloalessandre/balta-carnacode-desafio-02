@@ -20,7 +20,7 @@ namespace IMC.Models
     //        public bool Mais65Anos { get; set; }
     //    }
     //}
-    public class BMIFormModel
+    public class BMIModel
     {
         [Required(ErrorMessage = "A altura é obrigatória.")]
         [Range(0.01, double.MaxValue, ErrorMessage = "A altura é inválida.")]
