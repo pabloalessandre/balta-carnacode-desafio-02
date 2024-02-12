@@ -1,0 +1,61 @@
+﻿
+.card {
+    position: relative; /* Define a posição relativa para o card */
+    width: 300px; /* Largura do card */
+    background-color: #ffffff; /* Cor de fundo */
+    border-radius: 10px; /* Arredondamento dos cantos */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra */
+    margin: 20px; /* Espaçamento externo */
+}
+
+.card-body {
+    padding: 20px; /* Espaçamento interno */
+    display: flex; /* Usa flexbox para os itens internos */
+    flex-direction: column; /* Coloca os itens em coluna */
+    align-items: center; /* Centraliza os itens horizontalmente */
+}
+
+
+.container-peso-ideal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.logo-imc {
+    margin-bottom: -40px; /* Ajusta a posição da imagem sobreposta */
+    position: relative; /* Define a posição relativa para o container da imagem */
+}
+
+.logo img {
+    width: 89px; /* Largura da imagem do logo */
+    height: 89px; /* Altura da imagem do logo */
+    border: 3px solid #45fefe; /* Adiciona uma borda sólida de 3px com a cor #45fefe */
+    border-radius: 10px; /* Arredonda a borda para criar um efeito de círculo */
+    padding: 10px; /* Adiciona um espaço de 3px entre a imagem e a borda */
+    margin-top: 40px; /* Ajusta a posição da imagem sobreposta */
+    z-index: 1; /* Garante que a imagem fique sobreposta ao card */
+    
+}
+
+
+
+.result-page {
+    text-align: center; /* Centraliza o texto */
+}
+
+.btn-group {
+    margin-top: 20px; /* Espaçamento entre os botões e o texto */
+    display: flex; /* Usa flexbox para os botões */
+    flex-direction: column; /* Coloca os botões em coluna */
+    align-items: center; /* Centraliza os botões horizontalmente */
+    gap: 5px; /* Espaçamento entre os botões */
+}
+
+/* Estilos opcionais para os botões */
+.btn {
+    margin-right: 10px; /* Espaçamento entre os botões */
+    background-color: #45fefe;
+}
+
+

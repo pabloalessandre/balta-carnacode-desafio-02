@@ -1,5 +1,8 @@
-﻿@page "/"
+﻿@* @page "/"
 
+@using IMC.Models
+@inject NavigationManager navigation
+@inject Microsoft.JSInterop.IJSRuntime JSRuntime
 
 <link rel="stylesheet" href="Calculation.razor.css" />
 
@@ -16,14 +19,14 @@
             <InputText id="input-peso" class="input-text input-spacing" @bind-Value="@model.Peso" placeholder="Peso" />
             <InputText id="input-sexo" class="input-text input-spacing" @bind-Value="@model.Sexo" placeholder="Sexo" />
         </div>
-     
+
         <div class="checkbox-container">
             <div class="mais65anos">
                 <InputCheckbox id="input-mais65anos" class="checkbox" @bind-Value="@model.Mais65Anos" />
                 <label for="input-mais65anos">Eu tenho 65 anos ou mais</label>
             </div>
         </div>
-        
+
         <div class="btn-container">
             <button type="submit" class="btn1">
                 <span>Calcular meu IMC</span>
@@ -35,29 +38,160 @@
     </EditForm>
 </div>
 
+@code {
 
+    private BMIFormModel model = new BMIFormModel();
 
+    private async Task HandleSubmit()
+    {
+        // Verifica se o formulário é válido
+        if (model != null && !string.IsNullOrWhiteSpace(model.Altura) && !string.IsNullOrWhiteSpace(model.Peso))
+        {
+            // Converte altura e peso para double
+            if (double.TryParse(model.Altura, out double altura) && double.TryParse(model.Peso, out double peso))
+            {
+                // Faz o cálculo do IMC
+                double alturaMetros = altura / 100; // Converte a altura para metros
+                double imc = peso / (alturaMetros * alturaMetros); // Calcula o IMC
+
+                // Exibe o resultado do IMC
+                await JSRuntime.InvokeVoidAsync("alert", $"Seu IMC é: {imc:F2}");
+            }
+            else
+            {
+                // Exibe mensagem de erro caso a altura ou o peso não sejam válidos
+                await JSRuntime.InvokeVoidAsync("alert", "Por favor, insira valores válidos para altura e peso.");
+            }
+        }
+        else
+        {
+            // Exibe mensagem de erro caso algum campo obrigatório esteja vazio
+            await JSRuntime.InvokeVoidAsync("alert", "Por favor, preencha todos os campos obrigatórios.");
+        }
+    }
+    private void HandleEntendaClick()
+    {
+        // Lógica para exibir uma mensagem explicando o cálculo do IMC
+        string mensagem = "O Índice de Massa Corporal (IMC) é uma medida utilizada para avaliar se uma pessoa está no peso ideal, com base na sua altura. " +
+                          "Ele é calculado dividindo o peso (em quilogramas) pela altura ao quadrado (em metros). " +
+                          "O resultado indica se a pessoa está abaixo do peso, com peso normal, acima do peso ou obesa.";
+
+        // Exibe a mensagem
+        Console.WriteLine(mensagem);
+    }
+
+}
+ *@
+
+        @page "/"
+
+@using System.ComponentModel.DataAnnotations
+@using IMC.Models
+@inject NavigationManager navigation
+@inject Microsoft.JSInterop.IJSRuntime JSRuntime
+
+<link rel="stylesheet" href="Calculation.razor.css" />
+
+<PageTitle>Calculation</PageTitle>
+
+<h1 class="title">Cálculo de IMC</h1>
+
+<div class="form-container">
+    <EditForm Model="@model" OnValidSubmit="HandleSubmit">
+        <div class="input-container">
+            <InputText id="input-altura" class="input-text input-spacing" @bind-Value="@model.Altura" placeholder="Altura" />
+            <InputText id="input-peso" class="input-text input-spacing" @bind-Value="@model.Peso" placeholder="Peso" />
+            <InputText id="input-sexo" class="input-text input-spacing" @bind-Value="@model.Sexo" placeholder="Sexo" />
+        </div>
+
+        <div class="checkbox-container">
+            <div class="mais65anos">
+                <InputCheckbox id="input-mais65anos" class="checkbox" @bind-Value="@model.Mais65Anos" />
+                <label for="input-mais65anos">Eu tenho 65 anos ou mais</label>
+            </div>
+        </div>
+
+        <div class="btn-container">
+            <button type="submit" class="btn1">
+                <span>Calcular meu IMC</span>
+            </button>
+            <button type="button" class="btn2" @onclick="HandleEntendaClick">
+                <span>Entenda o cálculo</span>
+            </button>
+        </div>
+    </EditForm>
+</div>
 
 @code {
-    private MyModel model = new MyModel();
 
-    private void HandleSubmit()
+    private BMIFormModel model = new BMIFormModel();
+
+    private async Task HandleSubmit()
     {
-        // criar Lógica para manipular o envio do formulário
+        if (model != null && !string.IsNullOrWhiteSpace(model.Altura) && !string.IsNullOrWhiteSpace(model.Peso))
+        {
+            if (double.TryParse(model.Altura, out double altura) && double.TryParse(model.Peso, out double peso))
+            {
+                double alturaMetros = altura / 100;
+                double imc = peso / (alturaMetros * alturaMetros);
+
+                // Verifica o IMC e define a situação
+                string situacao = GetBmiSituation(imc);
+
+                // Exibe o resultado do IMC
+                await JSRuntime.InvokeVoidAsync("alert", $"Seu IMC é: {imc:F2}. Situação: {situacao}");
+            }
+            else
+            {
+                await JSRuntime.InvokeVoidAsync("alert", "Por favor, insira valores válidos para altura e peso.");
+            }
+        }
+        else
+        {
+            await JSRuntime.InvokeVoidAsync("alert", "Por favor, preencha todos os campos obrigatórios.");
+        }
+    }
+
+    private string GetBmiSituation(double bmi)
+    {
+        if (bmi < 17.0)
+        {
+            return "Muito abaixo do peso";
+        }
+        else if (bmi >= 17.0 && bmi < 18.5)
+        {
+            return "Abaixo do peso";
+        }
+        else if (bmi >= 18.5 && bmi < 25)
+        {
+            return "Peso normal";
+        }
+        else if (bmi >= 25 && bmi < 30)
+        {
+            return "Acima do peso";
+        }
+        else if (bmi >= 30 && bmi < 35)
+        {
+            return "Obesidade I";
+        }
+        else if (bmi >= 35 && bmi < 40)
+        {
+            return "Obesidade II (severa)";
+        }
+        else
+        {
+            return "Obesidade III (mórbida)";
+        }
     }
 
     private void HandleEntendaClick()
     {
-        // criar Lógica para manipular o clique no botão "Entenda o cálculo"
+        string mensagem = "O Índice de Massa Corporal (IMC) é uma medida utilizada para avaliar se uma pessoa está no peso ideal, com base na sua altura. " +
+                          "Ele é calculado dividindo o peso (em quilogramas) pela altura ao quadrado (em metros). " +
+                          "O resultado indica se a pessoa está abaixo do peso, com peso normal, acima do peso ou obesa.";
+
+        // Exibe a mensagem
+        Console.WriteLine(mensagem);
     }
 
-    public class MyModel
-    {
-        //criar uma pasta separada para o model
-        public string Altura { get; set; }
-        public string Peso { get; set; }
-        public string Sexo { get; set; }
-        public bool Mais65Anos { get; set; }
-    }
 }
-
