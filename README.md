@@ -41,3 +41,7 @@ Avançado: Componentizar o cálculo do IMC.
 1. Clone do repositório.
 2. Adição do arquivo .gitignore.
 3. Criação do projeto Blazor: ```dotnet new blazorwasm -o IMC --pwa```
+4. Adição das páginas Calculo.razor e Historico.razor.
+5. Ajuste no cabeçalho das páginas incluindo ```@page "/"``` e ```@page "/historico"``` respectivamente.
+6. Ajuste do cabeçalho de Home.razor para ```@page "/home"``` para que este seja o link dele.
+7. Ajuste no menu para incluir as páginas de cálculo e histórico.
