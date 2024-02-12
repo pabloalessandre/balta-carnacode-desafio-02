@@ -1,8 +1,63 @@
 ﻿@page "/"
 
-<h3>Calculo</h3>
+
+<link rel="stylesheet" href="Calculation.razor.css" />
+
+<PageTitle>Calculation</PageTitle>
+
+
+<h1 class="title">Cálculo de IMC</h1>
+
+
+<div class="form-container">
+    <EditForm Model="@model" OnValidSubmit="HandleSubmit">
+        <div class="input-container">
+            <InputText id="input-altura" class="input-text input-spacing" @bind-Value="@model.Altura" placeholder="Altura" />
+            <InputText id="input-peso" class="input-text input-spacing" @bind-Value="@model.Peso" placeholder="Peso" />
+            <InputText id="input-sexo" class="input-text input-spacing" @bind-Value="@model.Sexo" placeholder="Sexo" />
+        </div>
+     
+        <div class="checkbox-container">
+            <div class="mais65anos">
+                <InputCheckbox id="input-mais65anos" class="checkbox" @bind-Value="@model.Mais65Anos" />
+                <label for="input-mais65anos">Eu tenho 65 anos ou mais</label>
+            </div>
+        </div>
+        
+        <div class="btn-container">
+            <button type="submit" class="btn1">
+                <span>Calcular meu IMC</span>
+            </button>
+            <button type="button" class="btn2" @onclick="HandleEntendaClick">
+                <span>Entenda o cálculo</span>
+            </button>
+        </div>
+    </EditForm>
+</div>
+
+
 
 
 @code {
+    private MyModel model = new MyModel();
 
+    private void HandleSubmit()
+    {
+        // criar Lógica para manipular o envio do formulário
+    }
+
+    private void HandleEntendaClick()
+    {
+        // criar Lógica para manipular o clique no botão "Entenda o cálculo"
+    }
+
+    public class MyModel
+    {
+        //criar uma pasta separada para o model
+        public string Altura { get; set; }
+        public string Peso { get; set; }
+        public string Sexo { get; set; }
+        public bool Mais65Anos { get; set; }
+    }
 }
+
