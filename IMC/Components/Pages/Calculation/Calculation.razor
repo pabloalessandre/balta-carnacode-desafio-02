@@ -1,89 +1,6 @@
-﻿@* @page "/"
+﻿
 
-@using IMC.Models
-@inject NavigationManager navigation
-@inject Microsoft.JSInterop.IJSRuntime JSRuntime
-
-<link rel="stylesheet" href="Calculation.razor.css" />
-
-<PageTitle>Calculation</PageTitle>
-
-
-<h1 class="title">Cálculo de IMC</h1>
-
-
-<div class="form-container">
-    <EditForm Model="@model" OnValidSubmit="HandleSubmit">
-        <div class="input-container">
-            <InputText id="input-altura" class="input-text input-spacing" @bind-Value="@model.Altura" placeholder="Altura" />
-            <InputText id="input-peso" class="input-text input-spacing" @bind-Value="@model.Peso" placeholder="Peso" />
-            <InputText id="input-sexo" class="input-text input-spacing" @bind-Value="@model.Sexo" placeholder="Sexo" />
-        </div>
-
-        <div class="checkbox-container">
-            <div class="mais65anos">
-                <InputCheckbox id="input-mais65anos" class="checkbox" @bind-Value="@model.Mais65Anos" />
-                <label for="input-mais65anos">Eu tenho 65 anos ou mais</label>
-            </div>
-        </div>
-
-        <div class="btn-container">
-            <button type="submit" class="btn1">
-                <span>Calcular meu IMC</span>
-            </button>
-            <button type="button" class="btn2" @onclick="HandleEntendaClick">
-                <span>Entenda o cálculo</span>
-            </button>
-        </div>
-    </EditForm>
-</div>
-
-@code {
-
-    private BMIFormModel model = new BMIFormModel();
-
-    private async Task HandleSubmit()
-    {
-        // Verifica se o formulário é válido
-        if (model != null && !string.IsNullOrWhiteSpace(model.Altura) && !string.IsNullOrWhiteSpace(model.Peso))
-        {
-            // Converte altura e peso para double
-            if (double.TryParse(model.Altura, out double altura) && double.TryParse(model.Peso, out double peso))
-            {
-                // Faz o cálculo do IMC
-                double alturaMetros = altura / 100; // Converte a altura para metros
-                double imc = peso / (alturaMetros * alturaMetros); // Calcula o IMC
-
-                // Exibe o resultado do IMC
-                await JSRuntime.InvokeVoidAsync("alert", $"Seu IMC é: {imc:F2}");
-            }
-            else
-            {
-                // Exibe mensagem de erro caso a altura ou o peso não sejam válidos
-                await JSRuntime.InvokeVoidAsync("alert", "Por favor, insira valores válidos para altura e peso.");
-            }
-        }
-        else
-        {
-            // Exibe mensagem de erro caso algum campo obrigatório esteja vazio
-            await JSRuntime.InvokeVoidAsync("alert", "Por favor, preencha todos os campos obrigatórios.");
-        }
-    }
-    private void HandleEntendaClick()
-    {
-        // Lógica para exibir uma mensagem explicando o cálculo do IMC
-        string mensagem = "O Índice de Massa Corporal (IMC) é uma medida utilizada para avaliar se uma pessoa está no peso ideal, com base na sua altura. " +
-                          "Ele é calculado dividindo o peso (em quilogramas) pela altura ao quadrado (em metros). " +
-                          "O resultado indica se a pessoa está abaixo do peso, com peso normal, acima do peso ou obesa.";
-
-        // Exibe a mensagem
-        Console.WriteLine(mensagem);
-    }
-
-}
- *@
-
-        @page "/"
+ @page "/"
 
 @using System.ComponentModel.DataAnnotations
 @using IMC.Models
@@ -124,7 +41,7 @@
 
 @code {
 
-    private BMIFormModel model = new BMIFormModel();
+    private BMIModel model = new BMIModel();
 
     private async Task HandleSubmit()
     {
@@ -184,14 +101,14 @@
         }
     }
 
-    private void HandleEntendaClick()
+    private async Task HandleEntendaClick()
     {
         string mensagem = "O Índice de Massa Corporal (IMC) é uma medida utilizada para avaliar se uma pessoa está no peso ideal, com base na sua altura. " +
                           "Ele é calculado dividindo o peso (em quilogramas) pela altura ao quadrado (em metros). " +
                           "O resultado indica se a pessoa está abaixo do peso, com peso normal, acima do peso ou obesa.";
 
-        // Exibe a mensagem
-        Console.WriteLine(mensagem);
+        // Exibir a mensagem em um alerta usando JavaScript
+        await JSRuntime.InvokeVoidAsync("alert", mensagem);
     }
 
 }
