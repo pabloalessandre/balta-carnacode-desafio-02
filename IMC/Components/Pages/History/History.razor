@@ -1,0 +1,71 @@
+﻿@page "/history"
+
+<main class="container">
+	<div class="imagem">
+		<div class="logo">
+			<img src="./assets/icon-no-bg.png" alt="Logo da aplicação">
+		</div>
+	</div>
+	<h1 class="titulo">Histórico</h1>
+	<div class="history">
+		<input id="pesquisa-historico" type="text" class="input-text-history" placeholder="Pesquisar...">
+		<div class="card">
+			<div class="card-history">
+				<div class="history-log"></div>
+			</div>
+			<div class="card-history-content">
+				<div class="card-history-head">
+					<div class="title">Peso ideal <i class="custom-icon-verde fa-solid fa-square-check"></i></div>
+					<div class="time-history">8m atrás</div>
+				</div>
+				<div class="text-history">
+					<p>Parabéns, você está no seu peso ideal, continue mantendo este estilo!</p>
+				</div>
+			</div>
+		</div>
+		<div class="card">
+			<div class="card-history">
+				<div class="history-log"></div>
+			</div>
+			<div class="card-history-content">
+				<div class="card-history-head">
+					<div class="title">Sobrepeso <i class="custom-icon-vermelho fa-solid fa-circle-minus"></i></div>
+					<div class="time-history">12/10/2023</div>
+				</div>
+				<div class="text-history">
+					<p>Estamos quase lá! Faça alguns ajustes para ficar no peso ideal!</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</main>
+
+@code {
+	private List<RegistroHistorico> _bmiHistory;
+
+	protected override async Task OnInitializedAsync()
+	{
+		_bmiHistory = new List<RegistroHistorico>
+		{
+			new RegistroHistorico
+			{
+				Titulo = "Peso ideal <i class=\"custom-icon-verde fa-solid fa-square-check\"></i>",
+				TextoDataHora = "8m atrás",
+				Texto = "Parabéns, você está no seu peso ideal, continue mantendo este estilo!"
+			},
+			new RegistroHistorico
+			{
+				Titulo = "Sobrepeso <i class=\"custom-icon-vermelho fa-solid fa-circle-minus\"></i>",
+				TextoDataHora = "12/10/2023",
+				Texto = "Estamos quase lá! Faça alguns ajustes para ficar no peso ideal!"
+			},
+		};
+	}
+
+	public class RegistroHistorico
+	{
+		public string Titulo {get; set;}
+		public string TextoDataHora {get; set;}
+		public string Texto { get; set; }
+	}
+}
